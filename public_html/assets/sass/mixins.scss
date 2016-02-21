@@ -1,0 +1,54 @@
+@mixin calc($property, $expression) { 
+  #{$property}: -moz-calc(#{$expression}); 
+  #{$property}: -o-calc(#{$expression}); 
+  #{$property}: -webkit-calc(#{$expression}); 
+  #{$property}: calc(#{$expression}); 
+} 
+@mixin rotate($degrees)
+{
+  -webkit-transform: rotate($degrees);
+  -moz-transform: rotate($degrees);
+  -ms-transform: rotate($degrees);
+  -o-transform: rotate($degrees);
+  transform: rotate($degrees);
+}
+
+@mixin box-shadow($color:rgba(0,0,0,0.2), $blur:0, $x:0, $y:0,$inset:null) { // color, blur, x, y
+  -ms-box-shadow:$x $y $blur $color; // IE10+
+  @if ($x == 0 and $y == 0) { // non directional glow
+    filter: Glow(color=#{ie-hex-str($color)},strength=#{numericvalue($blur)});
+    -ms-filter: glow(color=#{ie-hex-str($color)},strength=#{numericvalue($blur)});
+  } @else {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=#{numericvalue($blur)}, Direction=#{degrees($x, $y)}, Color='#{ie-hex-str($color)}')"; // IE8
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=#{numericvalue($blur)}, Direction=#{degrees($x, $y)}, Color='#{ie-hex-str($color)}'); // IE7-
+  }
+  -o-box-shadow:$inset $x $y $blur $color; // Opera
+  -moz-box-shadow:$inset $x $y $blur $color; // Firefox
+  -webkit-box-shadow:$inset $x $y $blur $color; // Webkit (Safari, Chrome, other)
+  box-shadow:$inset $x $y $blur $color;
+}
+@mixin box-shadow($color:rgba(0,0,0,0.2), $blur:0, $x:0, $y:0,$inset:null) { // color, blur, x, y
+  -ms-box-shadow:$x $y $blur $color; // IE10+
+  @if ($x == 0 and $y == 0) { // non directional glow
+    filter: Glow(color=#{ie-hex-str($color)},strength=#{numericvalue($blur)});
+    -ms-filter: glow(color=#{ie-hex-str($color)},strength=#{numericvalue($blur)});
+  } @else {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=#{numericvalue($blur)}, Direction=#{degrees($x, $y)}, Color='#{ie-hex-str($color)}')"; // IE8
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=#{numericvalue($blur)}, Direction=#{degrees($x, $y)}, Color='#{ie-hex-str($color)}'); // IE7-
+  }
+  -o-box-shadow:$inset $x $y $blur $color; // Opera
+  -moz-box-shadow:$inset $x $y $blur $color; // Firefox
+  -webkit-box-shadow:$inset $x $y $blur $color; // Webkit (Safari, Chrome, other)
+  box-shadow:$inset $x $y $blur $color;
+}
+@mixin background-image-retina($file, $type, $width, $height) {
+  background-image: url($file + '.' + $type);
+ 
+  @media (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2) {
+    & {
+      background-image: url($file + '@2x.' + $type);
+      -webkit-background-size: $width $height;
+      background-size: $width $height;
+    }
+  }
+}

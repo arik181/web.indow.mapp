@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" manifest="mapp.appcache" ng-app="mapp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Modernizr -->
+    <script src="assets/js/modernizr-latest.js"></script>
+
+    <!-- Angular JS -->
+    <!-- Angular Main -->
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/angular-route.min.js"></script>
+
+    <!-- Angular Controllers -->
+    <script src="app/controllers/mappCtrl.js"></script>
+    <script src="app/controllers/jobsiteCtrl.js"></script>
+    <script src="app/controllers/settingsCtrl.js"></script>
+
+    <!-- Angular Services -->
+    <script src="app/services/jobsiteService.js"></script>
+    <script src="app/services/windowService.js"></script>
+    <script src="app/services/settingsService.js"></script>
+
+    <!-- Angular Directives -->
+    <script src="app/directives/optionsDirective.js"></script>
+
+    <!-- JQuery -->
+    <script src="assets/js/jquery.js"></script>
+
+    <!-- MAPP Validation -->
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/z9170.js"></script>
+
+    <title>IndowWindows - MAPP</title>
+</head>
+
+<script>
+var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+
+if(!is_chrome)
+{
+    window.location = "/chromefail";
+} 
+
+</script>
+
+
+<body ng-controller="jobsiteCtrl">
+
+<header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <ul class="list-inline pull-left" ng-hide="site_list">
+            <li class="sprite-icons job-list" ng-click="clickJobSiteList()">View Job List</li>
+        </ul>
+        <ul class="list-inline pull-right actions-header">
+            <li class="logintext">{{ logged_in ? "Logged In" : "Logged Out" }}</li>
+            <li><a href="#" class="sprite-icons logo-comp pull-left" tabindex="-1">MODI App</a></li>
+            <li><a type="button" class="btn btn-info" target="_blank" href="http://indowdev.com">Launch MODI</a></li>
+            <li><a class="sprite-icons help" data-toggle="modal" data-target="#reviewDataModal" href="#" tabindex="-1"></a></li>
+            <li><a class="sprite-icons settings" data-toggle="modal" data-target="#settingsModal" href="#" tabindex="-1" ng-click="clickSettings()"></a></li>
+        </ul>
+        <h2 id="customer-name" ng-hide="site_list">Customer: {{ jobsites[current_site_index].customerinfo.first_name }} {{ jobsites[current_site_index].customerinfo.last_name }}</h2>
+    </div>
+</header>
+
+<main class="container-fluid" ng-cloak>
+    <div class="row"> <!-- div 000 begin -->
+        <!-- Job list - Create New Job -->
+        <aside class="nav-jobs pull-left" ng-show="site_list" ng-hide="room_list">
+            <h2 class="sprite-icons" ng-click="clickDropdownSync()">Job Sites</h2>
+            <ul class="nav nav-sidebar" ng-repeat="site in jobsites | orderBy:'-jobsiteinfo.id'">
+                <li class="sprite-icons" ng-click="clickJobSiteDetail(jobsites.indexOf(site), current_room_index, current_window_index)">{{ site.customerinfo.first_name + ' ' + site.customerinfo.last_name }}<br /><span>{{ site.jobsiteinfo.address }}</span></li>
+            </ul>
+        </aside>
+
+        <!-- create new Job -->
+        <div id="create-job-site" ng-hide="room_list"> <!-- div 002 begin -->
+        <section class="create-job" ng-show="jobsite_create">
+            <p>Select a job site to continue or &nbsp;<a class="btn btn-info" ng-click="clickCreateNewJobSite()">CREATE NEW JOB SITE</a></p>
+        </section>
+
+        <!-- Customer Contact Information -->
+        <section class="contact-info pull-left" ng-show="contact_edit"> <!-- section 001 begin -->
+            <header>
+                <h2>Customer Contact Information</h2>
+            </header>
+
+            <form role="form" name="customerform" class="css-form" novalidate>
+                <div class="form-horizontal"> <!-- div 003 begin -->
+                    <div class="form-group">
+                        <label for="firstName" class="col-xs-3 control-label">First Name</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="firstName" ng-model="customerinfo.first_name" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="col-xs-3 control-label">Last Name</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="lastName" ng-model="customerinfo.last_name" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company" class="col-xs-3 control-label">Company</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="company" ng-model="customerinfo.company" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailOne" class="col-xs-3 control-label">Email</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control input-sm" id="emailOne" name="emailOne" ng-model="customerinfo.emailOne" required />
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="emailOneType" name="emailOneType" class="form-control input-sm" ng-model="customerinfo.emailOneType" ng-options="type for type in email_types">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailTwo" class="col-xs-3 control-label">Email</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control input-sm" id="emailTwo" name="emailTwo" ng-model="customerinfo.emailTwo" />
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="emailTwoType" name="emailTwoType" class="form-control input-sm" ng-model="customerinfo.emailTwoType" ng-options="type for type in email_types">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneOne" class="col-xs-3 control-label">Phone</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control input-sm" id="phoneOne" name="phoneOne" ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/" ng-model="customerinfo.phoneOne" required />
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="phoneOneType" name="phoneOneType" class="form-control input-sm" ng-model="customerinfo.phoneOneType" ng-options="type for type in phone_types">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneTwo" class="col-xs-3 control-label">Phone</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control input-sm" id="phoneTwo" name="phoneTwo" ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/" ng-model="customerinfo.phoneTwo" />
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="phoneTwoType" name="phoneTwoType" class="form-control input-sm" ng-model="customerinfo.phoneTwoType" ng-options="type for type in phone_types">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneThree" class="col-xs-3 control-label">Phone</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control input-sm" id="phoneThree" name="phoneThree" ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/" ng-model="customerinfo.phoneThree" />
+                        </div>
+                        <div class="col-xs-3">
+                            <select id="phoneThreeType" name="phoneThreeType" class="form-control input-sm" ng-model="customerinfo.phoneThreeType" ng-options="type for type in phone_types">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-8 col-xs-4">
+                            <a type="button" class="btn btn-green btn-block" ng-click="clickSaveCustomerInfo()" ng-disabled="customerform.$invalid">Save</a>
+                        </div>
+                    </div>
+                </div>  <!-- div 003 end -->
+            </form>
+        </section>  <!-- section 002 begin -->
+
+        <!-- Job Site Information -->
+        <section class="job-info pull-left" ng-show="jobsite_edit"> <!-- section 002 begin -->
+            <header>
+                <h2>Job Site Information</h2>
+            </header>
+
+            <form role="form" name="siteform" class="css-form" novalidate>
+                <div class="form-horizontal"> <!-- div 004 begin -->
+                    <div class="form-group">
+                        <label for="address" class="col-xs-3 control-label">Address</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="address" name="address" ng-model="jobsiteinfo.address" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="addressExt" class="col-xs-3 control-label">Address Ext</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="addressExt" name="addressExt" ng-model="jobsiteinfo.address_ext" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="col-xs-3 control-label">City</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="city" name="city" ng-model="jobsiteinfo.city" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="state" class="col-xs-3 control-label">State</label>
+                        <div class="col-xs-9">
+                            <select id="state" name="state" class="form-control input-sm" ng-model="jobsiteinfo.state" ng-options="state for state in states">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip" class="col-xs-3 control-label">Zip</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control input-sm" id="zip" name="zip" ng-model="jobsiteinfo.zipcode" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type" class="col-xs-3 control-label">Type</label>
+                        <div class="col-xs-9">
+                            <select id="type" name="type" class="form-control input-sm" ng-model="jobsiteinfo.type" ng-options="type for type in address_types" required>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-8 col-xs-4">
+                            <button type="button" class="btn btn-green btn-block" ng-click="clickSaveJobSiteInfo()" ng-disabled="siteform.$invalid">Save</button>
+                        </div>
+                    </div>
+                </div> <!-- div 004 end -->
+            </form>
+        </section> <!-- section 002 begin -->
+        </div> <!-- div 002 end -->
+
+        <!-- Select Rooms -->
+        <aside class="nav-windows pull-left" ng-show="room_list">
+            <div class="scroll-top"> <!-- div 005 begin -->
+                <div class="row">
+                    <div class="col-xs-7">
+                        <strong>Estimated: {{ jobsites[current_site_index].jobsiteinfo.window_count }}</strong><br />
+                        <strong>Measured: {{ jobsites[current_site_index].jobsiteinfo.measured_count }}</strong>
+                    </div>
+                    <div class="col-xs-5">
+                        <button type="button" class="btn btn-green" title="Add new window" ng-click="clickAddWindow(current_site_index,current_room_index,current_window_index)">Add +</button>
+                    </div>
+                </div>
+                <div class="row hidden">
+                    <ul class="list-inline col-xs-12 sort-by">
+                        <li>Sort by</li>
+                        <li>
+                            <div class="radio pull-left">
+                                <label>
+                                    <input type="radio" name="sortBy" class="sortBy" value="room" checked ng-model="sort_by" />
+                                    Room
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio pull-left">
+                                <label>
+                                    <input type="radio" name="sortBy" class="sortBy" value="name" checked ng-model="sort_by" />
+                                    Name
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div> <!-- div 005 end -->
+            <div class="scroll-box"> <!-- div 006 begin -->
+                <div class="row">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel" ng-repeat="room in rooms | orderBy:'name'">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <span class="sprite-icons delete-room pull-left" title="DELETE room" ng-click="clickDeleteRoom(current_site_index, rooms.indexOf(room))"></span><a data-toggle="collapse" data-parent="false" class="sprite-icons" href="#collapse{{ rooms.indexOf(room) }}" ng-click="clickRoomDetail(current_site_index, rooms.indexOf(room), current_window_index)" tabindex="-1">
+                                        {{ room.name }} ({{ room.windows.length }})
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ rooms.indexOf(room) }}" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ul class="nav nav-sidebar" ng-repeat="window in room.windows | orderBy:window_order">
+                                        <li ng-class="{'active' : actives[current_site_index].rooms[rooms.indexOf(room)].windows[room.windows.indexOf(window)], 'invalid': (! window.validation_passed && (window.measured == 'true')), 'valid': (window.validation_passed && (window.measured == 'true'))}" ng-click="clickWindowDetail(current_site_index, rooms.indexOf(room), room.windows.indexOf(window) )"><span ng-hide="window.location.length">No Location</span><span ng-show="window.location.length">{{ window.location }}</span><span ng-show="window.points[1] && window.points[3]"> &ndash; {{ window.points[1] }} x {{ window.points[3] }}</span><span class="sprite-icons delete" title="DELETE window" ng-click="clickDeleteWindow(current_site_index, rooms.indexOf(room), room.windows.indexOf(window))"></span><span class="sprite-icons" ng-class="{ true : 'dirty', false : 'clean'}[jobsites[current_site_index].rooms[rooms.indexOf(room)].windows[room.windows.indexOf(window)].dirty]"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- div 006 end -->
+            <div class="scroll-bottom"> <!-- div 007 begin -->
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a type="button" class="btn btn-green btn-block" data-toggle="modal" data-target="#jobNotesModal" href="#" title="Add notes related to the overall job" tabindex="-1">Job Notes</a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a type="button" class="btn btn-green btn-block" data-toggle="modal" data-target="#reviewDataModal" href="#" tabindex="-1">Review Data</a>
+                    </div>
+                </div>
+            </div> <!-- div 007 end -->
+        </aside>
+
+
+        <!-- create new Window -->
+        <section class="create-job" ng-show="window_create">
+            <p>Select a window to continue or click the add button.</p>
+        </section>
+
+        <section class="window-detail" ng-show="window_detail"> <!-- section 003 begin -->
+            <section class="pull-left scroll-box window"> <!-- section 004 begin -->
+            <form name="windowform" class="css-form pull-left" role="form" novalidate>
+                <div class="row">
+                    <div class="col-xs-7">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="shape" class="col-xs-5 control-label">Shape</label>
+                                <div class="col-xs-7" title="Select 'Custom' if you have a shape other than standard or Trapezoid">
+                                    <select id="shape" name="shape" class="form-control input-sm" ng-model="currentwindow.shape" ng-options="shape for shape in shape_options" ng-change="changeShape(current_site_index, current_room_index, current_window_index)" tabindex="1">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="room" class="col-xs-5 control-label">Room</label>
+                                <div class="col-xs-7">
+                                    <select id="room" name="room" class="form-control input-sm" ng-model="currentroom.name" ng-options="room for room in room_options | orderBy:'toString()'" ng-change="changeRoom(current_site_index, current_room_index, current_window_index)" tabindex="2">
+                                    </select>
+                                    <a href ng-click="clickAddNewRoomName()" tabindex="-1">Add Room</a>
+                                    <input type="text" maxlength="15" class="form-control input-sm input-left-small" id="roomfield" placeholder="Room Name" ng-model="roomfield" ng-show="roomfieldvisible"/>
+                                    <a href class="button btn-default btn-right-small" ng-click="clickTypeNewRoomName(current_site_index, current_room_index)" ng-show="roomfieldvisible" tabindex="-1">Add</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="location" class="col-xs-5 control-label">Location</label>
+                                <div class="col-xs-7">
+                                    <input type="text" maxlength="15" class="form-control input-sm" id="location" placeholder="Location" ng-model="currentwindow.location" tabindex="3" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="floor" class="col-xs-5 control-label">Floor</label>
+                                <div class="col-xs-7">
+                                    <input type="text" maxlength="15" class="form-control input-sm" id="floor" placeholder="Floor" ng-model="currentwindow.floor" tabindex="4" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="include" class="col-xs-5 control-label">Status</label>
+                                <div class="col-xs-7">
+                                    <select id="include" name="include" class="form-control input-sm" ng-model="currentwindow.status" ng-options="status for status in status_options" tabindex="5">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="product" class="col-xs-5 control-label">Product</label>
+                                <div class="col-xs-7">
+                                    <select id="product" name="product" class="form-control input-sm" ng-model="currentwindow.product" ng-options="product for product in products" ng-change="changeProduct(current_site_index, current_room_index, current_window_index)" tabindex="6">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="productType" class="col-xs-5 control-label">Product Type</label>
+                                <div class="col-xs-7">
+                                    <select id="productType" name="productType" class="form-control input-sm" ng-model="currentwindow.product_type" ng-options="product_type for product_type in product_types" tabindex="7">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="gasket" class="col-xs-5 control-label">Tubing</label>
+                                <div class="col-xs-7">
+                                    <select id="gasket" name="gasket" class="form-control input-sm" ng-model="currentwindow.gasket" ng-options="gasket for gasket in gaskets" tabindex="8">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="frameStep" class="col-xs-5 control-label">Frame Step</label>
+                                <div class="col-xs-7">
+                                     <select id="frameStep" name="frameStep" class="form-control input-sm" ng-model="currentwindow.frame_step" ng-options="frame_step for frame_step in frame_steps" tabindex="9">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="frameDepth" class="col-xs-5 control-label" title="Select value that represents the narrowest frame depth">Frame Depth</label>
+                                <div class="col-xs-7">
+                                     <select id="frameDepth" name="frameDepth" class="form-control input-sm" ng-model="currentwindow.frame_depth" ng-options="depth.string for depth in frame_depths track by depth.value" tabindex="10">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="topSpines" class="col-xs-5 checkbox-label">Top Spines</label>
+                                    <div class="sprite-icons" id="topSpines" name="spines" ng-class="{ true : 'spine-checked' }[currentwindow.top_spine]" tabindex="-1"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sideSpines" class="col-xs-5 checkbox-label">Side Spines</label>
+                                    <div class="sprite-icons" id="sideSpines" name="spines" ng-class="{ true : 'spine-checked' }[currentwindow.side_spines]" tabindex="-1"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="topSideSpines" class="col-xs-5 checkbox-label">Top &amp; Side Spines</label>
+                                <div class="sprite-icons" id="topSideSpines" name="spines" ng-class="{ true : 'spine-checked' }[currentwindow.top_side_spines]" tabindex="-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 form-left">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <div class="btn-group ext-btn-group" title="Adds 12&quot; to the diagonals ONLY">
+                                        <label class="btn" ng-class="{ true : 'btn-green active', false : 'btn-grey' }[currentwindow.extension]">
+                                            <input type="radio" name="extension_on" id="yes" checked ng-bind="currentwindow.extension" ng-click="clickTurnOnExtension(current_site_index, current_room_index, current_window_index)" tabindex="-1"/>ON
+                                        </label>
+                                        <label class="btn" ng-class="{ true : 'btn-grey', false : 'btn-green active' }[currentwindow.extension]">
+                                            <input type="radio" name="extension_off" id="no" ng-bind="currentwindow.extension" ng-click="clickTurnOffExtension(current_site_index, current_room_index, current_window_index, current_input_focus)" tabindex="-1"/>OFF
+                                        </label>
+                                    </div>
+                                    <div class="ext-title">Extension Tool</div>
+                                    <div class="ext-subtitle">(adds 12" to diagonals)</div>
+                                    <div id="extension_state" tabindex="-1">{{ currentwindow.extension }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-repeat="point in currentwindow.points track by $index">
+                                <label for="{{ measurement_characters[$index] }}" class="col-xs-2 control-label">{{ measurement_characters[$index] }}</label>
+                                <div class="col-xs-10">
+                                    <input type="text" maxlength="9" class="form-control input-sm input-left-small" id="{{ measurement_characters[$index] }}" name="{{ measurement_characters[$index] }}" title="{{ measurement_tooltips[$index] }}" ng-model="currentwindow.points[$index]" ng-focus="focusInputMeasurement(current_site_index, current_room_index, current_window_index, $index)" ng-blur="blurInputMeasurement()" tabindex="{{$index + 11}}"><span class="extension-text" ng-show="currentwindow.extensions[$index]"><strong> + 12&quot;</strong></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="draftyWindow" class="col-xs-9 control-label">Drafty Window?</label>
+                                <div class="col-xs-3">
+                                     <input type="checkbox" name="draftyWindow" id="draftyWindow" ng-model="currentwindow.drafty_window" ng-false-value="false" ng-true-value="true">
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <textarea class="form-control" id="notes" rows="5" placeholder="Window Notes" ng-model="currentwindow.notes"></textarea>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-grey btn-block" title="Validate Measurements" ng-click="clickValidateWindow(current_site_index, current_room_index, current_window_index)">Check</button>
+                        <button type="button" class="btn btn-green btn-block" ng-click="clickSaveWindow(current_site_index, current_room_index, current_window_index)" ng-disabled="! checked">Save</button>
+                        <button type="button" class="btn btn-grey btn-block" ng-click="clickClearWindow(current_site_index, current_room_index, current_window_index)">Clear</button>
+                    </div>
+                </div>
+            </form>
+            </section>
+            <section class="measurements">
+                <div class="row alert" role="alert" ng-class="current_well_type" ng-show="well_status_visible">{{ current_well_status }}</div>
+                <div>
+                    <div class="{{ currentwindow.shape }}" ng-class="{ true : 'flipped', false : 'straight' }[flipped]"></div>
+                    <ul class="list-unstyled">
+                        <li ng-repeat="point in currentwindow.points track by $index" class="ms{{  measurement_characters[$index] }}">{{  measurement_characters[$index] }} <input maxlength="9" ng-focus="focusInputMeasurement(current_site_index, current_room_index, current_window_index, $index)" ng-blur="blurInputMeasurement()" ng-model="currentwindow.points[$index]" title="{{ measurement_tooltips[$index] }}" class="label" ng-class="{ 'label-warning' : (current_highlight == measurement_characters[$index]), 'label-default' : ! (current_highlight == measurement_characters[$index]) }" tabindex="-1"><span class="extension-text" ng-show="currentwindow.extensions[$index]"><strong> + 12&quot;</strong></span>
+    </li>
+                    </ul>
+                </div>
+                <div id="diagram_note">
+                    <strong><u>Please NOTE:</u> Even if your window does not match the orientation of this diagram - 'C' is ALWAYS the LEFT height and 'D' is ALWAYS the RIGHT height.</strong>
+                </div>
+            </section>
+        </section>
+
+        <!-- Modal -->
+        <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Settings</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="form-horizontal">
+                                <div ng-hide="site_list">
+                                    <div class="form-group">
+                                        <label for="settingsGasket" class="col-xs-2 control-label">Tubing</label>
+                                        <div class="col-xs-3">
+                                            <select id="modal-gasket" name="settingsGasket" class="form-control input-sm" ng-model="defaults.tubing" ng-options="gasket for gasket in gaskets">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="settingsProductType" class="col-xs-2 control-label">Product Type</label>
+                                        <div class="col-xs-3">
+                                            <select id="modal-productType" name="settingsProductType" class="form-control input-sm" ng-model="defaults.product" ng-options="product_type for product_type in product_types">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="settingsFrameDepth" class="col-xs-2 control-label">Frame Depth</label>
+                                        <div class="col-xs-3">
+                                            <select id="modal-frameDepth" name="settingsFrameDepth" class="form-control input-sm" ng-model="defaults.frame_depth" ng-options="depth.string for depth in frame_depths track by depth.value">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="applyToAll" id="apply_all"> Apply to all (If unchecked, defaults will only apply to future windows)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="col-xs-2 control-label">Username</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control input-sm" ng-model="settings.username" id="username"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-xs-2 control-label">Password</label>
+                                    <div class="col-xs-4">
+                                        <input type="password" class="form-control input-sm" ng-model="settings.password" id="password"/>
+                                    </div>
+                                    <button class="btn btn-gray" id="login" ng-click="clickLogin()">Log In</button>
+                                    <div class="col-xs-4 col-xs-offset-2">
+                                        <p>{{ logged_in ? "Logged In" : "Logged Out" }}</p>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="form-group">
+                                    <div class="row">
+                                    <p for="clear_localstorage" class="col-xs-10 col-xs-offset-1 bg-danger">Warning: Clearing local storage can cause loss of data. Do not clear local storage unless all changes have been synced with the server.</p>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-xs-4 col-xs-offset-4">
+                                        <button class="btn btn-red" id="clear_localstorage" ng-click="clickClearStorage()">Clear Local Storage</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-gray" data-dismiss="modal">Close</button>
+                        <a class="btn btn-green" href="#savesettings" data-dismiss="modal" ng-click="clickSaveSettings()" tabindex="-1">Save changes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Login</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="form-horizontal">
+                                LOG IN if you are connected to the internet; if NOT connected to the<br>internet, click "x" to close.
+                                <br><br>
+                                <div class="form-group">
+                                    <label for="username" class="col-xs-2 control-label">Username</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control input-sm" ng-model="settings.username" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-xs-2 control-label">Password</label>
+                                    <div class="col-xs-4">
+                                        <input type="password" class="form-control input-sm" ng-model="settings.password" />
+                                    </div>
+                                    <button class="btn btn-gray" ng-click="clickLogin()">Log In</button>
+                                    <div class="col-xs-8 col-xs-offset-2"><br>
+                                        <p>{{ login_error }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="jobNotesModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="jobNotesLabel">Job Notes</h4>
+                        </div>
+                        <div class="modal-body">
+                            <textarea id="job-notes" ng-model="jobsites[current_site_index].jobsiteinfo.notes">
+                                {{ jobsites[current_site_index].jobsiteinfo.notes }}
+                            </textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <a type="button" class="btn btn-green" data-dismiss="modal" ng-click="clickSaveJobSiteNotes(current_site_index)">Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="helptextmodal" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            {{ helptext }}
+                        </div>
+                        <div class="modal-footer">
+                            <a type="button" class="btn btn-green" data-dismiss="modal">Okay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="reviewDataModal" tabindex="-1" role="dialog">
+                <div id="review-data" class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="reviewDataLabel">Review Data</h4>
+                        </div>
+
+                        <div class="modal-body" ng-show="!rooms.length"><h3 class="modal-title">No data to display</h3></div>
+
+                        <div ng-repeat="room in rooms">
+                            <div class="no_page_break modal-body" ng-repeat="window in room.windows">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h2>{{ room.name }}</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Shape : </strong> {{ window.shape }}</li>
+                                            <li><strong>Location : </strong> {{ window.location }}</li>
+                                            <li><strong>Floor : </strong> {{ window.floor }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Status : </strong> {{ window.status }}</li>
+                                            <li><strong>Product : </strong> {{ window.product }}</li>
+                                            <li><strong>Product Type : </strong> {{ window.product_type }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Gasket : </strong> {{ window.gasket }}</li>
+                                            <li><strong>Frame Step : </strong> {{ window.frame_step }}</li>
+                                            <li><strong>Frame Depth : </strong> {{ window.frame_depth.string }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h3>Measurements</h3>
+                                        <ul class="list-inline">
+                                            <li ng-repeat="point in window.points track by $index"><strong>{{ measurement_characters[$index] }} : </strong> {{ point }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div ng-show="window.notes" class="row">
+                                    <div class="col-xs-12">
+                                        <br><h3>Notes:</h3>
+                                        {{window.notes}}
+                                    </div>
+                                </div>
+
+                                <div class="row"><hr /></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button ng-click="print_popup()" type="button" class="btn btn-green pull-right">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- div 000 end -->
+    </main>
+    <!-- contenteditable="true" -->
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>

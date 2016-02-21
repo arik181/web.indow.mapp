@@ -1,0 +1,22 @@
+$white:				#ffffff;
+$light_teal:        #04abb5;
+$light_purple:		#814b96;
+$purple:			#7d4491;
+$dark_purple:       #562b6e;
+$darker_purple:     #432952;
+@import 'mixins';
+
+html,body{height:100%;}
+body{background:$light_teal}
+body,h1,h2,h3,h4,h5,h6 {font-family:"pragmatica-web",sans-serif;text-transform:uppercase;font-weight:200}
+header h1{text-indent:-999px;height:70px;width:460px;@include background-image-retina("/img/login_logo", "png",234px,70px);background-position:center center;background-repeat: no-repeat;margin:10px auto;}
+h2{background:$dark_purple;color:white;width:460px;margin:0 auto;line-height:70px;text-align:center;font-size:14pt;font-weight:300;border-radius:4px 4px 0 0;@include box-shadow($light_purple,1px,0px,1px,inset);}
+form{margin:0 auto;width:460px;background:white;padding:30px;border-radius:0 0 4px 4px;}
+input[type=submit]{background:$light_purple;border:1px solid $purple;display:block;margin:0 auto;color:$white;font-weight:200;text-transform:uppercase;letter-spacing:0.1em;padding:6px 14px;@include box-shadow(rgba(0,0,0,0.2),3px,0,0);text-shadow: 0px 0px 5px black;line-height:10pt;font-size:10pt;}
+label{font-weight:200;display:block;margin-left:90px;font-size:10pt}
+input[type=text],input[type=password]{width:220px;margin-left:90px;margin-bottom:15px}
+footer{width:460px;margin:15px auto;}
+footer p{height:15px;text-indent:-9999px;@include background-image-retina("/img/powered_by", "png",141px,15px);background-position:center right;background-repeat: no-repeat;}
+#infoMessage{width:460px; margin:0 auto;background:white;padding:10px;}
+.alert{margin:0;padding:10px 0px 0px 0px;text-align:center;}
+#wrapper{@include box-shadow(rgba(0,0,0,0.3),5px,0,0);width:460px; margin:0 auto;border-radius:4px;}

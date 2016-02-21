@@ -1,0 +1,740 @@
+/**  
+  * @outputFile ../css/style.css
+  */
+/* Unused above */
+/* **** OVERRIDES HOLLEN-B **** */
+.container {
+  margin: 0;
+  max-width: 960px; }
+
+.navbar {
+  min-height: 44px; }
+
+.navbar-nav > li > a {
+  padding-top: 12px;
+  padding-bottom: 12px; }
+
+.navbar-inverse {
+  background-color: #40464a;
+  border: none;
+  margin: 0; }
+
+.btn-info {
+  color: #40464a;
+  background-color: #7bcbd7;
+  border-color: #7bcbd7; }
+
+.alert-message {
+  padding: 15px 0;
+  margin: 0; }
+
+.alert-error {
+  padding: 15px 0;
+  margin: 0; }
+
+/* ***** OVERRIDES HOLLEN-B ***** */
+/**************\
+|*  Generics  *|
+\**************/
+html {
+  overflow: auto;
+  margin: 0 auto;
+  padding: 0;
+  background: #eaeaea; }
+
+body {
+  background: #ffffff;
+  color: #40464a;
+  min-width: 960px; }
+
+html, body {
+  height: 100%; }
+
+body, h1, h2, h3, h4, h5, h6, input, select {
+  font-family: Arial,sans-serif; }
+
+textarea {
+  line-height: 16px; }
+
+select {
+  -webkit-appearance: menulist-button;
+  border-color: #40464a; }
+
+h4 {
+  margin-bottom: 30px;
+  margin-top: 0;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 11pt; }
+
+textarea, input {
+  border: 1px solid #40464a; }
+
+.questions_form input[disabled] {
+  cursor: not-allowed !important;
+  color: #a8a8aa; }
+
+.sprite-icons {
+  background: url(../img/sprite-icons.png?v=1.2) no-repeat; }
+
+.btn-grey {
+  background-color: #a8a8aa;
+  text-transform: uppercase; }
+
+.btn-green {
+  background-color: #ace301;
+  color: #000000;
+  text-transform: uppercase; }
+
+.btn-red {
+  background-color: #ff9999;
+  color: #000000;
+  text-transform: uppercase; }
+
+.scroll-box {
+  height: 100%;
+  overflow-y: scroll; }
+
+.sort-by {
+  padding-top: 4px;
+  margin-bottom: 0; }
+
+.sort-by li {
+  vertical-align: top;
+  line-height: 24px;
+  padding-right: 14px; }
+
+.sort-by, .sort-by label {
+  font-weight: 100;
+  font-size: 13px; }
+
+.sort-by .radio {
+  margin: 0;
+  height: 20px; }
+
+.ext-title {
+  padding: 4px 0 0px 0; }
+
+.ext-subtitle {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 4px 0 20px 0; }
+
+.ext-btn-group {
+  margin-left: auto;
+  margin-right: auto; }
+
+.btn-group input[type="radio"] {
+  position: absolute;
+  left: -9999px; }
+
+/**************\
+|*  Header    *|
+\**************/
+header .container {
+  color: #ffffff; }
+
+header ul {
+  margin: 0; }
+
+header a.logo-comp {
+  text-indent: -900px;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  background-position: 0 -200px; }
+
+header h2 {
+  font-size: 18px;
+  margin: 0; }
+
+section header h2 {
+  padding: 16px 0 28px 40px;
+  font-weight: bold; }
+
+section .window {
+  min-width: 460px; }
+
+header .container h2 {
+  padding-left: 74px; }
+
+header .job-list {
+  background-position: 0 -254px;
+  padding-left: 54px;
+  line-height: 48px;
+  color: #8e969c; }
+
+header .actions-header {
+  margin-top: 7px;
+  color: white; }
+
+header .actions-header .logintext {
+  margin-right: 30px; }
+
+header .actions-header .btn {
+  font-weight: bold;
+  font-size: 12px; }
+
+header .actions-header li {
+  vertical-align: middle; }
+
+header .actions-header .help {
+  width: 30px;
+  height: 30px;
+  display: block;
+  background-position: 0 -391px; }
+
+header .actions-header .settings {
+  width: 30px;
+  height: 30px;
+  display: block;
+  background-position: 4px -325px; }
+
+#customer-name {
+  overflow: hidden;
+  text-align: center;
+  color: white;
+  padding-top: 15px; }
+
+/********************\
+|*  Site Structure  *|
+\********************/
+main {
+  background-color: #ffffff;
+  padding: 44px 15px 0px 15px;
+  position: relative;
+  overflow: hidden;
+  height: 100%; }
+
+main > div {
+  height: 100%; }
+
+main > div aside {
+  font-weight: 200;
+  color: #ffffff;
+  margin-bottom: 30px;
+  background-color: #272b2e;
+  height: 100%;
+  position: relative; }
+
+main > div aside h2 {
+  font-size: 17px;
+  line-height: 50px;
+  margin: 0;
+  padding: 0 0 0 8px; }
+
+main > div aside.nav-jobs {
+  background-color: #272b2e;
+  width: 213px;
+  overflow-y: scroll;
+  overflow-x: hidden; }
+
+main > div aside.nav-windows {
+  padding: 90px 0 80px 0;
+  width: 250px; }
+
+main > div aside .scroll-box {
+  padding: 0 15px; }
+
+main > div aside.nav-windows .scroll-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 15px 15px 0 15px; }
+
+main > div aside.nav-windows .scroll-top div + div {
+  padding-left: 0; }
+
+main > div aside.nav-windows .scroll-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 15px; }
+
+main > div aside.nav-windows .scroll-bottom div + div {
+  padding-left: 0; }
+
+main > div aside .panel-title {
+  font-size: 13px;
+  background-position: 0px -58px;
+  background-color: #91979b; }
+
+main > div aside .panel-group .panel {
+  background-color: #40464a;
+  border: none;
+  border-radius: 0; }
+
+main > div aside div .panel-body {
+  background-color: #272b2e;
+  padding: 0; }
+
+main > div aside .panel-group .panel-heading {
+  padding: 0;
+  border-bottom: 1px solid #272b2e; }
+
+main > div aside .panel-group .panel-heading a {
+  display: block;
+  padding: 8px 8px 8px 15px;
+  color: #ffffff;
+  background-position: 200px -154px; }
+
+main > div aside .panel-group .panel-heading a:hover {
+  text-decoration: none; }
+
+main > div aside .panel-group .panel-heading a.collapsed {
+  background-color: #40464a;
+  color: #ffffff;
+  background-position: 198px -106px; }
+
+main > div aside .panel-group .panel-heading + .panel-collapse .panel-body {
+  border-top: none; }
+
+main > div aside .panel-group .panel + .panel {
+  margin-top: 2px; }
+
+.filter-actions {
+  padding: 15px; }
+
+.filter-actions .btn {
+  text-transform: uppercase;
+  width: 150px;
+  display: block;
+  margin-top: 8px;
+  color: #40464a;
+  font-weight: bold;
+  font-size: 13px; }
+
+#create-job-site {
+  height: 100%;
+  overflow-y: scroll; }
+
+#create-window {
+  height: 100%;
+  overflow-y: scroll; }
+
+/****************\
+|*  Sections    *|
+\****************/
+main aside.nav-windows + section {
+  overflow: hidden; }
+
+main > section {
+  overflow: hidden; }
+
+main section {
+  height: 100%; }
+
+main section.create-job {
+  padding-top: 140px;
+  text-align: center; }
+
+main section > section > form {
+  padding: 15px 10px;
+  width: 100%;
+  overflow: hidden; }
+
+main section > section > form {
+  background-color: #eaeaea;
+  padding: 15px 10px;
+  width: 100%;
+  overflow: hidden; }
+
+main section > section .form-group > div {
+  padding-left: 0; }
+
+main section > section label.control-label {
+  padding-left: 0px;
+  padding-right: 8px; }
+
+.measurements {
+  position: relative;
+  overflow-y: scroll;
+  color: black; }
+
+.measurements div {
+  height: 430px;
+  margin: 0 auto;
+  width: 350px;
+  overflow: hidden;
+  height: 340px;
+  position: relative; }
+
+.measurements .alert {
+  height: auto;
+  width: auto; }
+
+.measurements div.Rectangle {
+  background: url("../img/rectangle.png?v=1.2") no-repeat top left;
+  background-position: 100px 80px; }
+
+.measurements div.Custom {
+  background: url("../img/rectangle.png?v=1.2") no-repeat top left;
+  background-position: 100px 80px; }
+
+.measurements div.Trapezoid {
+  background: url("../img/trapezoid.png?v=1.2") no-repeat top left;
+  background-position: 100px 36px; }
+
+.measurements li {
+  font-size: 10px;
+  font-weight: bold;
+  width: 120px;
+  position: absolute; }
+
+.measurements li .label {
+  font-size: 10px;
+  padding: 6px 0px 6px 10px;
+  width: 65px;
+  display: inline-block;
+  color: black;
+  text-align: left; }
+
+.measurements div.Rectangle li.msA {
+  top: 15px;
+  left: 120px; }
+
+.measurements div.Custom li.msA {
+  top: 15px;
+  left: 120px; }
+
+.measurements li.msA {
+  left: 120px;
+  top: 15px; }
+
+.measurements li.msB {
+  left: 120px;
+  top: 210px; }
+
+.measurements li.msC {
+  left: 10px;
+  top: 130px; }
+
+.measurements li.msD {
+  left: 230px;
+  top: 130px; }
+
+.measurements li.msE {
+  left: 10px;
+  top: 210px;
+  width: 120px; }
+
+.measurements li.msF {
+  left: 230px;
+  top: 210px;
+  width: 120px; }
+
+.measurements li input {
+  padding: 5px !important;
+  border: 0px;
+  padding-left: 10px; }
+
+#diagram_note {
+  border: 4px solid;
+  border-color: grey;
+  font-size: 15px;
+  width: 40%;
+  height: auto;
+  padding: 10px;
+  overflow: hidden; }
+
+/****************\
+|*  FORMS       *|
+\****************/
+section > section.pull-left {
+  background-color: #eaeaea;
+  max-width: 400px; }
+
+section > section > div.alert-message {
+  border-radius: 0;
+  border: none;
+  background: #ace301;
+  text-align: center;
+  margin-bottom: 0;
+  font-size: 12px;
+  font-weight: bold; }
+
+section > section > div.alert-warning {
+  border-radius: 0;
+  border: none;
+  color: black;
+  background: #eaeaea;
+  text-align: center;
+  margin-bottom: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 12px;
+  font-weight: bold; }
+
+section > section > div.alert-error {
+  border-radius: 0;
+  border: none;
+  background: #ff9999;
+  text-align: center;
+  margin-bottom: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 12px;
+  font-weight: bold; }
+
+.form-horizontal .control-label {
+  font-size: 12px; }
+
+.checkbox-label {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  padding-right: 8px;
+  max-width: 100%;
+  text-align: right; }
+
+input[type="checkbox"] {
+  margin-top: 0px; }
+
+section header + form {
+  width: 430px;
+  padding: 0 40px; }
+
+section header + form .form-horizontal .control-label {
+  white-space: nowrap;
+  text-align: left; }
+
+section .form-group div + div {
+  padding-left: 0; }
+
+.modal-body form .form-horizontal .control-label {
+  white-space: nowrap;
+  text-align: left; }
+
+.spine-checked {
+  width: 23px;
+  height: 23px;
+  float: left;
+  background-position: 0 0px; }
+
+.spine-unchecked {
+  width: 23px;
+  height: 23px;
+  float: left;
+  background-position: 0 -58px; }
+
+/****************\
+|*  MODAL       *|
+\****************/
+#job-notes {
+  width: 100%;
+  height: 184px; }
+
+#review-data {
+  width: 856px; }
+
+#review-data h2 {
+  font-size: 17px;
+  margin: 0;
+  font-weight: bold; }
+
+#review-data h3 {
+  font-size: 13px;
+  margin: 0;
+  font-weight: bold; }
+
+hr {
+  background: #e5e5e5; }
+
+#review-data .modal-footer {
+  border-top: 0px; }
+
+.no_page_break {
+  page-break-inside: avoid; }
+
+/****************\
+|*  Navigation  *|
+\****************/
+main > div aside .nav > li {
+  color: #40464a;
+  background-color: #40464a;
+  font-weight: bold;
+  line-height: 19px;
+  padding: 8px 8px 8px 15px;
+  font-size: 13px; }
+
+main > div aside .nav > li + li {
+  border-top: 1px solid #272b2e; }
+
+main > div aside .nav > li span.sprite-icons {
+  width: 23px;
+  height: 23px;
+  float: right; }
+
+main > div aside .nav > li span.clean {
+  background-position: 0px -522px; }
+
+main > div aside .nav > li span.dirty {
+  background-position: 0px -581px; }
+
+main > div aside .nav > li span.valid {
+  background-position: 0px 0px; }
+
+main > div aside .nav > li span.delete {
+  background-position: 0px -58px; }
+
+.delete-room {
+  background-position: 0px -58px;
+  width: 23px;
+  height: 23px;
+  margin-top: 5px; }
+
+main > div aside.nav-windows .nav > li:hover {
+  background-color: #eaeaea; }
+
+main > div aside.nav-windows .nav > li {
+  background-color: #a8a8aa;
+  color: #ffffff;
+  padding-left: 7px; }
+
+main > div aside.nav-windows .nav > li.active {
+  background-color: #eaeaea;
+  color: #000000;
+  padding-left: 7px; }
+
+main > div aside.nav-windows .nav > li.invalid {
+  border-left: 8px solid #ff9999; }
+
+main > div aside.nav-windows .nav > li.valid {
+  border-left: 8px solid #a2ca27; }
+
+/* Job Sites */
+main > div aside.nav-jobs h2 {
+  background-position: 168px -446px; }
+
+main > div aside.nav-jobs .nav > li {
+  color: #ffffff;
+  background-position: 160px -98px;
+  font-size: 13px;
+  font-weight: bold; }
+
+main > div aside.nav-jobs .nav > li span {
+  font-size: 12px;
+  font-weight: 100; }
+
+main > div aside.nav-jobs .nav {
+  border-top: 1px solid #272b2e;
+  border-bottom: 1px solid #272b2e; }
+
+/*********************\
+|*  Generic Classes  *|
+\*********************/
+.w200 {
+  font-weight: 200; }
+
+.w300 {
+  font-weight: 300; }
+
+.w400 {
+  font-weight: 400; }
+
+.w700 {
+  font-weight: 700; }
+
+.w900 {
+  font-weight: 900; }
+
+.large_input {
+  width: 190px; }
+
+.medium_input {
+  width: 160px; }
+
+.small_input {
+  width: 120px; }
+
+.extra_small_input {
+  width: 40px; }
+
+.button {
+  background: #e1e3e2;
+  border: 1px solid #40464a;
+  color: #40464a;
+  font-weight: 400;
+  font-size: 8pt;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 28px;
+  padding: 0 10px;
+  border-radius: 2px;
+  height: 30px; }
+
+a.button {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit; }
+
+a.button:hover {
+  color: inherit;
+  text-decoration: none; }
+
+.button.disabled {
+  color: #8e969c;
+  cursor: not-allowed; }
+
+.datepicker-input {
+  width: 90px; }
+
+.the_submitter {
+  height: 30px; }
+
+.input-left-small {
+  width: 86px;
+  display: inline; }
+
+.input-left-extra-small {
+  width: 40px;
+  display: inline; }
+
+.btn-right-small {
+  width: 45px;
+  display: inline; }
+
+.extension-text {
+  font-weight: 600em;
+  color: red; }
+
+#extension_state {
+  display: none; }
+
+/**************\
+|* Extensions *|
+\**************/
+.clearfix {
+  zoom: 1; }
+  .clearfix:before, .clearfix:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden; }
+  .clearfix:after {
+    clear: both; }
+
+.matchingColumnHeight {
+  padding-bottom: 20050px;
+  margin-bottom: -20000px; }
+
+/*********************
+ * Browser Message   *
+ *********************/
+.browser_pad {
+  background: grey; }
+
+.browser_pad h2 {
+  color: white; }
+
+.browser_message {
+  background: white;
+  color: black;
+  overflow: hidden;
+  text-align: center;
+  line-height: 20px;
+  margin-top: 20px; }
